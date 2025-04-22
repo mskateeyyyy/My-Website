@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #da1487b6;
+        }
+
+        .login-container {
+            background-color: #582f8d;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+        .disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .reset-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div>
+                <input type="text" id="username" placeholder="Username" required />
+                <div id="usernameError" class="error"></div>
+            </div>
+            <div>
+                <input type="password" id="password" placeholder="Password" required />
+                <div id="passwordError" class="error"></div>
+            </div>
+            <button type="submit" id="loginButton">Log In</button>
+            <div id="resetMessage" class="reset-message">Please wait 10 seconds before trying again.</div>
+        </div>
+
+    
+</body>
+<script>
+    let attemptCount = 0;
+    let isLocked = false;
+
+    // This would be your actual validation with correct credentials (this is just a mock)
+    const correctUsername = "user123";
+    const correctPassword = "admin123";
+
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Clear previous errors
+        document.getElementById("usernameError").textContent = '';
+        document.getElementById("passwordError").textContent = '';
+        document.getElementById("resetMessage").style.display = 'none';
+
+        // Get the user input
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Simple validation check
+        let isValid = true;
+
+        if (username === "") {
+            document.getElementById("usernameError").textContent = "Username is required";
+            isValid = false;
+        }
+
+        if (password === "") {
+            document.getElementById("passwordError").textContent = "Password is required";
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        // If the system is locked, show the reset message and block the login button
+        if (isLocked) {
+            document.getElementById("resetMessage").style.display = 'block';
+            return;
+        }
+
+        // If credentials are incorrect, count the attempts
+        if (username !== correctUsername || password !== correctPassword) {
+            attemptCount++;
+
+            if (attemptCount >= 0) {
+                isLocked = true;
+                document.getElementById("resetMessage").style.display = 'block';
+                document.getElementById("loginButton").classList.add("disabled");
+
+                // Reset the lock after 10 seconds
+                setTimeout(function() {
+                    isLocked = false;
+                    document.getElementById("resetMessage").style.display = 'none';
+                    document.getElementById("loginButton").classList.remove("disabled");
+                    attemptCount = 0;
+                }, 10000);  // 10 seconds reset
+            } else {
+                alert(`Invalid username or password. Attempt ${attemptCount} of 3.`);
+            }
+        } else {
+            // Successful login - redirect to homepage or other page
+            alert("Login successful! Redirecting...");
+            window.location.href = "LD2 FERNANDO_KATE.html";  // Replace with your actual homepage URL
+        }
+    });
+            </script>
+         
+            
+
+</html>
